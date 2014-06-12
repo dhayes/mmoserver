@@ -19,7 +19,7 @@ class Server : private boost::noncopyable {
 public:
   /// Construct the server to listen on the specified TCP address and port, and
   /// serve up files from the given directory.
-  explicit Server(const std::string& address, const std::string& port);
+  explicit Server(int port);
 
   /// Run the server's io_service loop.
   void run();
@@ -48,7 +48,7 @@ private:
 
   /// The next connection to be accepted.
   boost::shared_ptr<Connection> new_connection_;
-
+  boost::asio::ip::tcp::endpoint endpoint;
 };
 
 

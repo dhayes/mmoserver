@@ -25,6 +25,7 @@ class Game {
 public:
 	Game();
 	virtual ~Game();
+	void run();
 private:
 	World world;
 	Registry registry;

@@ -8,28 +8,25 @@
 #include "Server.h"
 #include <boost/bind.hpp>
 #include <signal.h>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/asio.hpp>
 
-Server::Server(const std::string& address, const std::string& port) : io_service_(), signals_(io_service_), acceptor_(io_service_), connection_manager_(),  new_connection_() {
+Server::Server(int port) : io_service_(), signals_(io_service_), acceptor_(io_service_), connection_manager_(),  new_connection_(), endpoint(boost::asio::ip::tcp::v4(), port) {
   // Register to handle the signals that indicate when the server should exit.
   // It is safe to register for the same signal multiple times in a program,
   // provided all registration for the specified signal is made through Asio.
-  signals_.add(SIGINT);
-  signals_.add(SIGTERM);
+	signals_.add(SIGINT);
+	signals_.add(SIGTERM);
 #if defined(SIGQUIT)
-  signals_.add(SIGQUIT);
+	signals_.add(SIGQUIT);
 #endif // defined(SIGQUIT)
-  signals_.async_wait(boost::bind(&Server::handle_stop, this));
-
-  // Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
-  boost::asio::ip::tcp::resolver resolver(io_service_);
-  boost::asio::ip::tcp::resolver::query query(address, port);
-  boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(query);
-  acceptor_.open(endpoint.protocol());
-  acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
-  acceptor_.bind(endpoint);
-  acceptor_.listen();
-
-  start_accept();
+	signals_.async_wait(boost::bind(&Server::handle_stop, this));
+	acceptor_.open(endpoint.protocol());
+	acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
+    acceptor_.bind(endpoint);
+    acceptor_.listen();
+    start_accept();
 }
 
 void Server::run() {
@@ -41,6 +38,7 @@ void Server::run() {
 }
 
 void Server::start_accept() {
+	std::cout << "start accept";
 	new_connection_.reset(new Connection(io_service_, connection_manager_));
 	acceptor_.async_accept(new_connection_->socket(), boost::bind(&Server::handle_accept, this, boost::asio::placeholders::error));
 }

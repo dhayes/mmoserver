@@ -11,15 +11,16 @@
 #include <iostream>
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include "Game.h"
 
-int main()
-{
-  boost::asio::io_service io;
+int main() {
+	std::cout << "3";
+	Game game;
+	std::cout << "2";
 
-  boost::asio::deadline_timer t(io, boost::posix_time::seconds(5));
-  t.wait();
-
-  std::cout << "Hello, world!\n";
-  //test
-  return 0;
+	std::cout << "4";
+	int i;
+	std::cin >> i;
+	game.run();
+	return 0;
 }

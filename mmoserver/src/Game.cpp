@@ -7,12 +7,17 @@
 
 #include "Game.h"
 
-Game::Game() : server("127.0.0.1", "8080") {
+Game::Game() : server(8080) {
 	// TODO Auto-generated constructor stub
 
 }
 
 Game::~Game() {
 	// TODO Auto-generated destructor stub
+}
+
+void Game::run() {
+	std::cout << "5";
+	server.run();
 }
 
