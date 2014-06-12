@@ -20,7 +20,7 @@
 
 class ConnectionManager;
 
-class Connection : public boost::enable_shared_from_this<Connection>, private boost::noncopyable {
+class Connection : public boost::enable_shared_from_this<Connection> {
 public:
   /// Construct a connection with the given io_service.
   explicit Connection(boost::asio::io_service& io_service, ConnectionManager& connection_manager_);

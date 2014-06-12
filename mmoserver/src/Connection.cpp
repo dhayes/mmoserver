@@ -31,10 +31,12 @@ void Connection::stop() {
 }
 
 void Connection::read_header() {
+	std::cout << "read header" << std::endl;
 	boost::asio::async_read(socket_, boost::asio::buffer(read_msg_.data(), Packet::header_length), boost::bind(&Connection::handle_read_header, this, boost::asio::placeholders::error));
 }
 
 void Connection::handle_read_header(const boost::system::error_code& e) {
+	std::cout << "handle read header" << std::endl;
 	if (!e && read_msg_.decode_header()) {
 	      read_body();
 	} else {
@@ -43,12 +45,17 @@ void Connection::handle_read_header(const boost::system::error_code& e) {
 }
 
 void Connection::read_body() {
+	std::cout << "read body" << std::endl;
 	boost::asio::async_read(socket_, boost::asio::buffer(read_msg_.body(), read_msg_.body_length()), boost::bind(&Connection::handle_read_body, this, boost::asio::placeholders::error));
 }
 
 void Connection::handle_read_body(const boost::system::error_code& e) {
+	std::cout << "handle read body" << std::endl;
 	if (!e) {
-	    //////handle message
+	    std::string msg;
+	    msg.assign(read_msg_.body(), read_msg_.body_length());
+	    write(msg);
+	    std::cout << msg << std::endl;
 		read_header();
 	} else {
 		connection_manager_.stop(shared_from_this());

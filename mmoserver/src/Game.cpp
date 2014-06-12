@@ -17,7 +17,6 @@ Game::~Game() {
 }
 
 void Game::run() {
-	std::cout << "5";
 	server.run();
 }
 

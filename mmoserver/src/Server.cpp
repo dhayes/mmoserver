@@ -38,12 +38,13 @@ void Server::run() {
 }
 
 void Server::start_accept() {
-	std::cout << "start accept";
+	std::cout << "start accept" << std::endl;
 	new_connection_.reset(new Connection(io_service_, connection_manager_));
 	acceptor_.async_accept(new_connection_->socket(), boost::bind(&Server::handle_accept, this, boost::asio::placeholders::error));
 }
 
 void Server::handle_accept(const boost::system::error_code& e) {
+	std::cout << "handle accept" << std::endl;
 	// Check whether the server was stopped by a signal before this completion
 	// handler had a chance to run.
 	if (!acceptor_.is_open()) {

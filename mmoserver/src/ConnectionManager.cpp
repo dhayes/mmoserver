@@ -10,11 +10,13 @@
 #include <boost/bind.hpp>
 
 void ConnectionManager::start(boost::shared_ptr<Connection> c) {
+	std::cout << "start connection" << std::endl;
 	connections_.insert(c);
 	c->start();
 }
 
 void ConnectionManager::stop(boost::shared_ptr<Connection> c) {
+	std::cout << "stop connection" << std::endl;
 	connections_.erase(c);
 	c->stop();
 }

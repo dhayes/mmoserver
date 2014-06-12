@@ -14,13 +14,7 @@
 #include "Game.h"
 
 int main() {
-	std::cout << "3";
 	Game game;
-	std::cout << "2";
-
-	std::cout << "4";
-	int i;
-	std::cin >> i;
 	game.run();
 	return 0;
 }
