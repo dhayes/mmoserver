@@ -14,6 +14,9 @@
 #include "Connection.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/bimap.hpp>
 
 class Server;
 class Game;
@@ -27,6 +30,7 @@ public:
 private:
 	Server* server_;
 	Game* game_;
+	//boost::bimap< int, boost::shared_ptr<Connection> > playerid_connection_map;
 };
 
 #endif /* MESSAGEHANDLER_H_ */

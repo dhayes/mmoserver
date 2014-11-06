@@ -6,11 +6,7 @@
  */
 
 #include "Server.h"
-#include <boost/bind.hpp>
-#include <signal.h>
-#include <boost/shared_ptr.hpp>
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/asio.hpp>
+
 
 Server::Server(int port) : io_service_(), signals_(io_service_), acceptor_(io_service_), connection_manager_(),  new_connection_(), endpoint(boost::asio::ip::tcp::v4(), port) {
   // Register to handle the signals that indicate when the server should exit.
@@ -27,7 +23,6 @@ Server::Server(int port) : io_service_(), signals_(io_service_), acceptor_(io_se
     acceptor_.bind(endpoint);
     acceptor_.listen();
     connection_manager_ = new ConnectionManager();
-    start_accept();
 }
 
 void Server::run() {
@@ -35,6 +30,7 @@ void Server::run() {
 	// have finished. While the server is running, there is always at least one
 	// asynchronous operation outstanding: the asynchronous accept call waiting
 	// for new incoming connections.
+	start_accept();
 	io_service_.run();
 }
 
@@ -68,5 +64,9 @@ void Server::handle_stop() {
 	// will exit.
 	acceptor_.close();
 	connection_manager_->stop_all();
+}
+
+void Server::kill_connection(boost::shared_ptr<Connection> connection) {
+	connection_manager_->stop(connection);
 }
 

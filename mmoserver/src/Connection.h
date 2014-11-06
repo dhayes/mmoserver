@@ -35,12 +35,13 @@ public:
 
   /// Stop all asynchronous operations associated with the connection.
   void stop();
+
+  void write(std::string);
 private:
   void read_header();
   void handle_read_header(const boost::system::error_code&);
   void read_body();
   void handle_read_body(const boost::system::error_code&);
-  void write(std::string);
   void handle_write(const boost::system::error_code&);
 
   /// Socket for the connection.

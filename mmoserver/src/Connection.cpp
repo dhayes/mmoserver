@@ -56,7 +56,7 @@ void Connection::handle_read_body(const boost::system::error_code& e) {
 	    msg.assign(read_msg_.body(), read_msg_.body_length());
 	    write(msg);
 	    messagehandler_->handleMessage(msg, shared_from_this());
-	    std::cout << msg << std::endl;
+	    //std::cout << msg << std::endl;
 		read_header();
 	} else {
 		connection_manager_->stop(shared_from_this());

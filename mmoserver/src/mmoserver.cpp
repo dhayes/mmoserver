@@ -19,6 +19,7 @@ int main() {
 	Server server(8080);
 	Game game;
 	MessageHandler messagehandler(&server, &game);
+	game.init(&messagehandler);
 	server.init(&messagehandler);
 	server.run();
 	return 0;

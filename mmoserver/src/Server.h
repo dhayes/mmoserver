@@ -14,6 +14,11 @@
 #include "ConnectionManager.h"
 #include "MessageHandler.h"
 #include "Connection.h"
+#include <boost/bind.hpp>
+#include <signal.h>
+#include <boost/shared_ptr.hpp>
+#include <boost/enable_shared_from_this.hpp>
+#include <boost/asio.hpp>
 
 class ConnectionManager;
 class MessageHandler;
@@ -24,10 +29,12 @@ public:
   /// Construct the server to listen on the specified TCP address and port, and
   /// serve up files from the given directory.
   explicit Server(int port);
-
+  //initialise with messagehandler
   void init(MessageHandler*);
   /// Run the server's io_service loop.
   void run();
+
+  void kill_connection(boost::shared_ptr<Connection>);
 
 private:
   /// Initiate an asynchronous accept operation.

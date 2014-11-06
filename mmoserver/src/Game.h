@@ -18,12 +18,19 @@
 #include "DatabaseHandler.h"
 #include "ItemHandler.h"
 #include "Player.h"
+#include "MessageHandler.h"
 
+class MessageHandler;
 
 class Game {
 public:
 	Game();
 	virtual ~Game();
+	void init(MessageHandler*);
+	int login(std::string, std::string);
+	void logout(int);
+	void move(int, int, int);
+
 private:
 	/*World world;
 	Registry registry;
@@ -32,6 +39,7 @@ private:
 	ActionHandler actionhandler;
 	DatabaseHandler databasehandler;
 	std::map<int, boost::shared_ptr<Player> > players;*/
+	MessageHandler* messagehandler_;
 };
 
 #endif /* GAME_H_ */
