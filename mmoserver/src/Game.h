@@ -11,7 +11,6 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include "Server.h"
 #include "World.h"
 #include "Registry.h"
 #include "ObjectHandler.h"
@@ -25,16 +24,14 @@ class Game {
 public:
 	Game();
 	virtual ~Game();
-	void run();
 private:
-	World world;
+	/*World world;
 	Registry registry;
 	ObjectHandler objecthandler;
 	ItemHandler itemhandler;
 	ActionHandler actionhandler;
 	DatabaseHandler databasehandler;
-	std::map<int, boost::shared_ptr<Player> > players;
-	Server server;
+	std::map<int, boost::shared_ptr<Player> > players;*/
 };
 
 #endif /* GAME_H_ */

@@ -26,6 +26,7 @@ Server::Server(int port) : io_service_(), signals_(io_service_), acceptor_(io_se
 	acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
     acceptor_.bind(endpoint);
     acceptor_.listen();
+    connection_manager_ = new ConnectionManager();
     start_accept();
 }
 
@@ -37,9 +38,13 @@ void Server::run() {
 	io_service_.run();
 }
 
+void Server::init(MessageHandler* messagehandler) {
+	messagehandler_ = messagehandler;
+}
+
 void Server::start_accept() {
 	std::cout << "start accept" << std::endl;
-	new_connection_.reset(new Connection(io_service_, connection_manager_));
+	new_connection_.reset(new Connection(io_service_, connection_manager_, messagehandler_));
 	acceptor_.async_accept(new_connection_->socket(), boost::bind(&Server::handle_accept, this, boost::asio::placeholders::error));
 }
 
@@ -52,7 +57,7 @@ void Server::handle_accept(const boost::system::error_code& e) {
 	}
 
 	if (!e) {
-		connection_manager_.start(new_connection_);
+		connection_manager_->start(new_connection_);
 	}
 	start_accept();
 }
@@ -62,6 +67,6 @@ void Server::handle_stop() {
 	// operations. Once all operations have finished the io_service::run() call
 	// will exit.
 	acceptor_.close();
-	connection_manager_.stop_all();
+	connection_manager_->stop_all();
 }
 

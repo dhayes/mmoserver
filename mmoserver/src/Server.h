@@ -12,8 +12,12 @@
 #include <string>
 #include <boost/noncopyable.hpp>
 #include "ConnectionManager.h"
+#include "MessageHandler.h"
+#include "Connection.h"
 
 class ConnectionManager;
+class MessageHandler;
+class Connection;
 
 class Server : private boost::noncopyable {
 public:
@@ -21,6 +25,7 @@ public:
   /// serve up files from the given directory.
   explicit Server(int port);
 
+  void init(MessageHandler*);
   /// Run the server's io_service loop.
   void run();
 
@@ -44,11 +49,14 @@ private:
   boost::asio::ip::tcp::acceptor acceptor_;
 
   /// The connection manager which owns all live connections.
-  ConnectionManager connection_manager_;
+  ConnectionManager* connection_manager_;
 
   /// The next connection to be accepted.
   boost::shared_ptr<Connection> new_connection_;
   boost::asio::ip::tcp::endpoint endpoint;
+
+  MessageHandler* messagehandler_;
+
 };
 
 

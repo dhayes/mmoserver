@@ -16,7 +16,7 @@
 
 using boost::asio::ip::tcp;
 
-Connection::Connection(boost::asio::io_service& io_service, ConnectionManager& manager) : socket_(io_service), connection_manager_(manager) {}
+Connection::Connection(boost::asio::io_service& io_service, ConnectionManager* manager, MessageHandler* messagehandler) : socket_(io_service), connection_manager_(manager), messagehandler_(messagehandler) {}
 
 boost::asio::ip::tcp::socket& Connection::socket() {
 	return socket_;
@@ -40,7 +40,7 @@ void Connection::handle_read_header(const boost::system::error_code& e) {
 	if (!e && read_msg_.decode_header()) {
 	      read_body();
 	} else {
-		connection_manager_.stop(shared_from_this());
+		connection_manager_->stop(shared_from_this());
 	}
 }
 
@@ -55,10 +55,11 @@ void Connection::handle_read_body(const boost::system::error_code& e) {
 	    std::string msg;
 	    msg.assign(read_msg_.body(), read_msg_.body_length());
 	    write(msg);
+	    messagehandler_->handleMessage(msg, shared_from_this());
 	    std::cout << msg << std::endl;
 		read_header();
 	} else {
-		connection_manager_.stop(shared_from_this());
+		connection_manager_->stop(shared_from_this());
 	}
 }
 
@@ -78,6 +79,6 @@ void Connection::handle_write(const boost::system::error_code& e) {
 	    	boost::asio::async_write(socket_, boost::asio::buffer(write_msgs_.front().data(), write_msgs_.front().length()), boost::bind(&Connection::handle_write, this, boost::asio::placeholders::error));
 	    }
 	} else {
-		connection_manager_.stop(shared_from_this());
+		connection_manager_->stop(shared_from_this());
 	}
 }

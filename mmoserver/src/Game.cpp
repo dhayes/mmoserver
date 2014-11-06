@@ -7,7 +7,7 @@
 
 #include "Game.h"
 
-Game::Game() : server(8080) {
+Game::Game() {
 	// TODO Auto-generated constructor stub
 
 }
@@ -15,8 +15,3 @@ Game::Game() : server(8080) {
 Game::~Game() {
 	// TODO Auto-generated destructor stub
 }
-
-void Game::run() {
-	server.run();
-}
-

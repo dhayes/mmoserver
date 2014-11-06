@@ -17,13 +17,15 @@
 #include "ConnectionManager.h"
 #include "Player.h"
 #include "Packet.h"
+#include "MessageHandler.h"
 
+class MessageHandler;
 class ConnectionManager;
 
 class Connection : public boost::enable_shared_from_this<Connection> {
 public:
   /// Construct a connection with the given io_service.
-  explicit Connection(boost::asio::io_service& io_service, ConnectionManager& connection_manager_);
+  explicit Connection(boost::asio::io_service& io_service, ConnectionManager* connection_manager_, MessageHandler*);
 
   /// Get the socket associated with the connection.
   boost::asio::ip::tcp::socket& socket();
@@ -45,13 +47,14 @@ private:
   boost::asio::ip::tcp::socket socket_;
 
   /// The manager for this connection.
-  ConnectionManager& connection_manager_;
+  ConnectionManager* connection_manager_;
 
   ///pointer to player associated with connection
   boost::shared_ptr<Player> player;
   Packet read_msg_;
   std::deque<Packet> write_msgs_;
 
+  MessageHandler* messagehandler_;
 };
 
 #endif /* CONNECTION_H_ */

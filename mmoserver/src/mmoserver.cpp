@@ -12,9 +12,14 @@
 #include <boost/asio.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include "Game.h"
+#include "Server.h"
+#include "MessageHandler.h"
 
 int main() {
+	Server server(8080);
 	Game game;
-	game.run();
+	MessageHandler messagehandler(&server, &game);
+	server.init(&messagehandler);
+	server.run();
 	return 0;
 }
