@@ -32,14 +32,23 @@ void MessageHandler::handleMessage(std::string msg, boost::shared_ptr<Connection
 
 			int playerid = game_->login(username, password);
 			if (playerid) {
-				std::cout << "logged in" << std::endl;
-				//playerid_connection_map.insert(boost::bimap< int, boost::shared_ptr<Connection> >::value_type(playerid, connection)); //insert into bimap
+				std::cout << playerid << std::endl;
+				playerid_connection_map.insert(boost::bimap< int, boost::shared_ptr<Connection> >::value_type(playerid, connection)); //insert into bimap
 			} else {
 				connection->write("{\"type\": \"login failed\"}"); //send login failed message
 				//server_->kill_connection(connection);
 			}
-		} else if (/*playerid_connection_map.left.find(connection)*/ false) {
+		} else if (playerid_connection_map.right.find(connection)->second) {
 			std::cout << "logged in" << std::endl;
+			int playerid = playerid_connection_map.right.find(connection)->second;
+			if (type == "logout") {
+				game_->logout(playerid);
+				playerid_connection_map.left.erase(playerid);
+				//kill connection
+			} else if (type == "move") {
+				game_->move(playerid, pt.get_child("message").get<int>("xpos"), pt.get_child("message").get<int>("ypos"));
+			}
+
 		}
 	} catch (std::exception const& e) {
 		std::cout << "error reading message\n";

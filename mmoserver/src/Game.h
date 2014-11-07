@@ -36,9 +36,9 @@ private:
 	Registry registry;
 	ObjectHandler objecthandler;
 	ItemHandler itemhandler;
-	ActionHandler actionhandler;
+	ActionHandler actionhandler;*/
 	DatabaseHandler databasehandler;
-	std::map<int, boost::shared_ptr<Player> > players;*/
+	std::map<int, boost::shared_ptr<Player> > players;
 	MessageHandler* messagehandler_;
 };
 

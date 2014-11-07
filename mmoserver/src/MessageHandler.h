@@ -30,7 +30,7 @@ public:
 private:
 	Server* server_;
 	Game* game_;
-	//boost::bimap< int, boost::shared_ptr<Connection> > playerid_connection_map;
+	boost::bimap< int, boost::shared_ptr<Connection> > playerid_connection_map;
 };
 
 #endif /* MESSAGEHANDLER_H_ */

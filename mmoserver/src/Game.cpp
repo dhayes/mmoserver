@@ -21,16 +21,21 @@ Game::~Game() {
 }
 
 int Game::login(std::string username, std::string password) {
-	if (username == "aaa" && password == "bbb") {
+	/*if (username == "aaa" && password == "bbb") {
 		return 567;
+
+	}*/
+	int playerid = databasehandler.auth(username, password);
+	if (playerid) {
+
 	}
-	return 0;
+	return playerid;
 }
 
 void Game::logout(int) {
-	//logout player
+
 }
 
 void Game::move(int playerid, int x, int y) {
-	std::cout << "IIII" << std::endl;
+
 }
