@@ -19,11 +19,36 @@ DatabaseHandler::~DatabaseHandler() {
 }
 
 int DatabaseHandler::auth(std::string username, std::string password) {
-
-
 	pqxx::work txn(c);
-	pqxx::result r = txn.exec("SELECT 1");
+	std::string q = "SELECT * FROM players WHERE username='" + username + "' AND password='" + password + "';";
+	pqxx::result r = txn.exec(q);
 	txn.commit();
 	return r[0][0].as<int>();
+}
+
+std::string DatabaseHandler::getUsername(int playerid) {
+	pqxx::work txn(c);
+	std::string q = "SELECT * FROM players WHERE id='";
+	q += playerid;
+	q += "';";
+	pqxx::result r = txn.exec(q);
+	txn.commit();
+	return r[0][1].as<std::string>();
+}
+
+int DatabaseHandler::getXpos(int playerid) {
+	pqxx::work txn(c);
+	std::string q = "SELECT * FROM players WHERE id = " + boost::lexical_cast<std::string >(playerid) + " ;";
+	pqxx::result r = txn.exec(q);
+	txn.commit();
+	return r[0][3].as<int>();
+}
+
+int DatabaseHandler::getYpos(int playerid) {
+	pqxx::work txn(c);
+	std::string q = "SELECT * FROM players WHERE id = " + boost::lexical_cast<std::string >(playerid) + " ;";
+	pqxx::result r = txn.exec(q);
+	txn.commit();
+	return r[0][4].as<int>();
 }
 

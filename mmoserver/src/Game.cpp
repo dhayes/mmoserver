@@ -21,13 +21,10 @@ Game::~Game() {
 }
 
 int Game::login(std::string username, std::string password) {
-	/*if (username == "aaa" && password == "bbb") {
-		return 567;
-
-	}*/
 	int playerid = databasehandler.auth(username, password);
 	if (playerid) {
-
+		players[playerid] = boost::shared_ptr<Player>(new Player());
+		std::cout << "Xpos=" << databasehandler.getXpos(playerid) << std::endl;
 	}
 	return playerid;
 }

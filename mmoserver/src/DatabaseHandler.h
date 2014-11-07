@@ -10,12 +10,16 @@
 
 #include <iostream>
 #include <pqxx/pqxx>
+#include <boost/lexical_cast.hpp>
 
 class DatabaseHandler {
 public:
 	DatabaseHandler();
 	virtual ~DatabaseHandler();
 	int auth(std::string, std::string);
+	std::string getUsername(int);
+	int getXpos(int);
+	int getYpos(int);
 private:
 	pqxx::connection c;
 };
